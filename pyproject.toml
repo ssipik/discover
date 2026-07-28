@@ -1,0 +1,28 @@
+[project]
+name = "rag-discover"
+version = "0.1.0"
+description = "Pipeline library for the agentic RAG pipeline (stage 1: discovery)"
+requires-python = ">=3.13"
+dependencies = [
+    "feedparser>=6.0",
+    "httpx>=0.27",
+    "pydantic>=2.7",
+    "PyYAML>=6.0",
+    "SQLAlchemy>=2.0",
+    "psycopg[binary]>=3.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/rag_discover"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

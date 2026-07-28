@@ -1,0 +1,14 @@
+# One-off runs: docker compose run --rm pipeline python -m rag_discover [--source ecb_press] [--run-id ...]
+services:
+  pipeline:
+    build: .
+    command: python -m rag_discover
+    # command: tail -f /dev/null
+    volumes:
+      # live-mount code + config over the image copies (edit without rebuild)
+      - ./src:/app
+      - ./config:/app/config
+      - ../data:/app/data
+    environment:
+      # host.docker.internal = the host machine, where ../postgres publishes 5433
+      RAG_PG_DSN: postgresql+psycopg://rag:rag@host.docker.internal:5433/rag_ingestion
