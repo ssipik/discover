@@ -9,6 +9,11 @@ services:
       - ./src:/app
       - ./config:/app/config
       - ../data:/app/data
+      - ./.vscode:/app/.vscode
+    # every var in .env (confluence credentials, RAG_HTTP_*) goes into the container
+    env_file:
+      - path: .env
+        required: false
     environment:
-      # host.docker.internal = the host machine, where ../postgres publishes 5433
+      # overrides .env: host.docker.internal = the host machine, where ../postgres publishes 5433
       RAG_PG_DSN: postgresql+psycopg://rag:rag@host.docker.internal:5433/rag_ingestion
