@@ -10,7 +10,12 @@ CONFIG = Path(__file__).parents[1] / "config" / "sources.yaml"
 
 def test_load_shipped_config():
     sources = load_sources(CONFIG)
-    assert set(sources) == {"ecb_press", "ecb_statpress", "local_pdfs"}
+    assert set(sources) == {
+        "ecb_press",
+        "ecb_statpress",
+        "local_pdfs",
+        "confluence_quant",
+    }
     for sid, cfg in sources.items():
         assert cfg.id == sid
 
@@ -30,6 +35,17 @@ def test_load_shipped_config():
     assert local.default_language == "de"
     # a full directory scan is a complete snapshot, so deletions are detectable
     assert local.detect_deletions is True
+
+    confluence = sources["confluence_quant"]
+    assert confluence.type == "confluence"
+    assert confluence.source_system == "confluence"
+    assert confluence.base_url.startswith("https://")
+    assert confluence.space_key and confluence.label
+    # attachments are deferred to a later iteration (ARCHITECTURE.md block 1)
+    assert confluence.include_attachments is False
+    # a space+label listing is a complete snapshot, so a page that is deleted
+    # or unlabelled is really gone
+    assert confluence.detect_deletions is True
 
 
 def test_unknown_field_rejected(tmp_path):
