@@ -1,0 +1,33 @@
+{
+  "results": [
+    {
+      "id": "att4001",
+      "status": "current",
+      "title": "Risikobericht Q2.pdf",
+      "mediaType": "application/pdf",
+      "fileSize": 482913,
+      "pageId": "123456",
+      "version": {
+        "number": 2,
+        "createdAt": "2026-07-18T14:02:11.000Z"
+      },
+      "downloadLink": "/download/attachments/123456/Risikobericht%20Q2.pdf?version=2&modificationDate=1784736131000&api=v2"
+    },
+    {
+      "id": "att4002",
+      "status": "current",
+      "title": "anhang.docx",
+      "mediaType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "fileSize": 20481,
+      "pageId": "123456",
+      "version": {
+        "number": 1,
+        "createdAt": "2026-06-01T10:00:00.000Z"
+      },
+      "downloadLink": "/download/attachments/123456/anhang.docx?version=1&modificationDate=1780646400000&api=v2"
+    }
+  ],
+  "_links": {
+    "base": "https://acme.atlassian.net/wiki"
+  }
+}

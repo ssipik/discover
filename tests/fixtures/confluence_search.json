@@ -1,0 +1,41 @@
+{
+  "results": [
+    {
+      "id": "123456",
+      "type": "page",
+      "status": "current",
+      "title": "Risikoinventur 2026",
+      "version": {
+        "number": 7,
+        "when": "2026-07-20T09:12:33.123Z",
+        "message": "Abschnitt 3 überarbeitet"
+      },
+      "_links": {
+        "webui": "/spaces/RISK/pages/123456/Risikoinventur+2026"
+      }
+    },
+    {
+      "id": "789012",
+      "type": "page",
+      "status": "current",
+      "title": "Meldewesen: Prozessbeschreibung",
+      "version": {
+        "number": 1,
+        "when": "2026-05-02T07:45:00.000Z"
+      },
+      "_links": {
+        "webui": "/spaces/RISK/pages/789012/Meldewesen"
+      }
+    }
+  ],
+  "start": 0,
+  "limit": 100,
+  "size": 2,
+  "totalSize": 2,
+  "cqlQuery": "space=\"RISK\" and label=\"RAG\" and type=page",
+  "_links": {
+    "base": "https://acme.atlassian.net/wiki",
+    "context": "/wiki",
+    "self": "https://acme.atlassian.net/wiki/rest/api/content/search"
+  }
+}
