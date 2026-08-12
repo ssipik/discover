@@ -6,12 +6,12 @@
     "configurations": [
         
         {
-            "name": "Python Debugger: rag_discover",
+            "name": "rag_discover",
             "type": "debugpy",
             "request": "launch",
             "module": "rag_discover",
             "args": [
-                "--source", "confluence_quant",
+                // "--source", "confluence_quant",
             ],
         },
         {
