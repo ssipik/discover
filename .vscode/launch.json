@@ -6,7 +6,7 @@
     "configurations": [
         
         {
-            "name": "Python Debugger: Module",
+            "name": "Python Debugger: rag_discover",
             "type": "debugpy",
             "request": "launch",
             "module": "rag_discover",

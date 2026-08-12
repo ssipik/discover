@@ -55,4 +55,4 @@ Add an entry to `config/sources.yaml`. For a new *source type*, implement a `Bas
 
 - **Manifest key** is `(run_id, source_system, doc_url)` — deliberately without `source_id`: the same document listed by two feeds of one source system (e.g. ECB meeting accounts appear in both press feeds) is one row and is never parsed/embedded twice.
 - **Rolling-window feeds** (ECB RSS shows only the ~15 newest items) carry `detect_deletions: false` — absence from a run is not a deletion signal, and stage 2 must exclude them from deletion detection.
-- `run_id` is caller-supplied (later the Airflow run_id); re-running with the same `run_id` is idempotent via upsert.
+- `run_id` is caller-supplied (later the Airflow run_id). In stage discover it only has the role to label the documents discovered in the current run. The following stages use the `run_id` to identify the most recent sightings. Running these stages is idempotent.
