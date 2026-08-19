@@ -5,9 +5,9 @@ services:
     command: python -m rag_discover
     # command: tail -f /dev/null
     volumes:
-      # live-mount code + config over the image copies (edit without rebuild)
+      # live-mount code over the image copy (edit without rebuild); sources.yaml
+      # and parameters.yaml come from the rag-config dependency, not from here
       - ./src:/app
-      - ./config:/app/config
       - ../data:/app/data
       - ./.vscode:/app/.vscode
     # every var in .env (confluence credentials, RAG_HTTP_*) goes into the container

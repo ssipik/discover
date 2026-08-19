@@ -4,7 +4,7 @@ from rag_discover.readers.base import BaseReader
 from rag_discover.readers.confluence import ConfluenceReader
 from rag_discover.readers.local_files import LocalFilesReader
 from rag_discover.readers.rss import RssReader
-from rag_discover.sources import SourceConfig
+from rag_config import SourceConfig
 
 # One reader per source type (ARCHITECTURE.md → Source connectors). Future readers
 # ("bitbucket", "sitemap") register here without touching the CLI or DB code.

@@ -13,7 +13,7 @@ class Settings:
     http_timeout: float
     user_agent: str
     # Confluence Cloud basic auth (email + API token). Kept out of sources.yaml,
-    # which is committed and baked into the images; Vault supplies these on the
+    # which is committed to the shared rag-config repo; Vault supplies these on the
     # cluster (ARCHITECTURE.md → Deployment). None until a confluence source runs.
     confluence_email: str | None
     confluence_api_token: str | None

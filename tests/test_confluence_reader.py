@@ -19,7 +19,7 @@ from rag_discover.readers.confluence import (
     _cql_value,
     is_parseable,
 )
-from rag_discover.sources import SourceConfig
+from rag_config import SourceConfig
 
 FIXTURES = Path(__file__).parent / "fixtures"
 SEARCH = json.loads((FIXTURES / "confluence_search.json").read_text())

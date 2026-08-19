@@ -9,8 +9,9 @@ from __future__ import annotations
 
 import argparse
 import logging
-import os
 import sys
+
+from dotenv import load_dotenv
 
 from rag_discover.discover import run_discovery
 
@@ -28,11 +29,6 @@ def build_parser() -> argparse.ArgumentParser:
         help="source id from sources.yaml; repeatable (default: all sources)",
     )
     parser.add_argument(
-        "--config",
-        default=os.environ.get("RAG_SOURCES_PATH", "config/sources.yaml"),
-        help="path to sources.yaml (default: $RAG_SOURCES_PATH or %(default)s)",
-    )
-    parser.add_argument(
         "--run-id",
         default=None,
         help="run id tying manifest rows to this run (default: local-<utc timestamp>)",
@@ -46,9 +42,7 @@ def main(argv: list[str] | None = None) -> int:
         level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s"
     )
     try:
-        report = run_discovery(
-            args.config, source_ids=args.source_ids, run_id=args.run_id
-        )
+        report = run_discovery(source_ids=args.source_ids, run_id=args.run_id)
     except (ValueError, FileNotFoundError) as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
@@ -59,4 +53,6 @@ def main(argv: list[str] | None = None) -> int:
 
 
 if __name__ == "__main__":
+    # Only needed when running in development. In production the env variables are provided by Vault.
+    load_dotenv()
     raise SystemExit(main())

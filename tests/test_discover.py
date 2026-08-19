@@ -1,10 +1,9 @@
-from pathlib import Path
 
 import pytest
 
 from rag_discover.discover import run_discovery
 
-CONFIG = Path(__file__).parents[1] / "config" / "sources.yaml"
+CONFIG = None  # the copy shipped in rag-config
 
 
 def test_unknown_source_id_rejected_before_any_io():

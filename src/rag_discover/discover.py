@@ -9,7 +9,7 @@ from sqlalchemy.engine import Engine
 
 from rag_discover.db import get_engine, upsert_manifest
 from rag_discover.readers import get_reader
-from rag_discover.sources import load_sources
+from rag_config import load_sources
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +25,7 @@ class DiscoveryReport:
 
 
 def run_discovery(
-    config_path: str | Path,
+    config_path: str | Path | None = None,
     source_ids: list[str] | None = None,
     run_id: str | None = None,
     engine: Engine | None = None,

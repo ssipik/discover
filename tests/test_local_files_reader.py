@@ -4,7 +4,7 @@ import pytest
 
 from rag_discover.readers import get_reader
 from rag_discover.readers.local_files import LocalFilesReader
-from rag_discover.sources import SourceConfig
+from rag_config import SourceConfig
 
 
 def make_config(path: str, **overrides) -> SourceConfig:

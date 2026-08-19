@@ -45,11 +45,38 @@ uv sync --frozen --extra dev        # lock-exact install from uv.lock (creates .
 .venv/bin/python -m pytest          # offline unit tests
 ```
 
-Dependency versions are pinned in `uv.lock` — both the venv (`uv sync --frozen`) and the Docker image (`uv export` during build) install exactly those versions. Change `pyproject.toml`, then run `uv lock` to update the lockfile.
+Dependency versions are pinned in `uv.lock` — both the venv and the Docker image (`uv sync --frozen`) install exactly those versions. Change `pyproject.toml`, then run `uv lock` to update the lockfile.
+
+## Building the image
+
+`sources.yaml` and `parameters.yaml` come from `rag-config`, a **private** Bitbucket repo pinned by commit in `uv.lock`. The build clones it, so it needs read access:
+
+```bash
+export BB_TOKEN='<repository access token>'
+docker build --secret id=git_token,env=BB_TOKEN -t rag-discover .
+```
+
+Create the token at the `config` repo → Settings → Security → Access tokens → **Create Repository Access Token**, scope **Repositories: Read**. One token covers every stage's build — they all pull the same repo.
+
+It is passed as a BuildKit secret, never an `ARG` or `ENV`, and the `.netrc` it writes is deleted inside the same `RUN`, so no image layer holds it. With no secret passed the block is a no-op, so this keeps working if the repo is ever made public.
+
+**When the token is needed**
+
+- Rebuilding the dependency layer: a changed `uv.lock` or `pyproject.toml`, `--no-cache`, or a fresh machine or CI runner with no layer cache.
+
+**When it is not**
+
+- Stage code changes only. `COPY src ./src` comes *after* the dependency layer, so Docker reuses the cached `uv sync` and never contacts Bitbucket.
+- **Running** an image — `rag-config` is already installed in `/opt/venv`.
+- Host venvs. `uv sync` uses your own git credential helper, so the tests and local runs need no token.
+
+So credentials are a **build-time** concern only: whoever runs a container or a Nomad job authenticates to nothing.
 
 ## Adding a source
 
-Add an entry to `config/sources.yaml`. For a new *source type*, implement a `BaseReader` subclass and register it in `readers/__init__.py` (`READER_REGISTRY`); nothing else changes.
+Add an entry to `sources.yaml` in the shared [`rag-config`](../config) package — once, for every stage. For a new *source type*, implement a `BaseReader` subclass and register it in `readers/__init__.py` (`READER_REGISTRY`); nothing else changes.
+
+Because `uv.lock` pins `rag-config` by commit, a config change reaches this stage only when its `rev` is bumped in `pyproject.toml` and re-locked.
 
 ## Design notes
 

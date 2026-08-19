@@ -5,7 +5,7 @@ import pytest
 from rag_discover.db import deduplicate_entries
 from rag_discover.readers import get_reader
 from rag_discover.readers.rss import RssReader
-from rag_discover.sources import SourceConfig
+from rag_config import SourceConfig
 
 FIXTURE = Path(__file__).parent / "fixtures" / "ecb_press_sample.xml"
 

@@ -11,6 +11,7 @@ dependencies = [
     "SQLAlchemy>=2.0",
     "psycopg[binary]>=3.1",
     "dotenv>=0.9.9",
+    "rag-config",
 ]
 
 [project.optional-dependencies]
@@ -27,3 +28,6 @@ packages = ["src/rag_discover"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[tool.uv.sources]
+rag-config = { git = "https://bitbucket.org/get-capital/config.git", rev = "main" }

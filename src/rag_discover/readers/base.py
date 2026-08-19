@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from typing import Iterator
 
 from rag_discover.models import ManifestEntry
-from rag_discover.sources import SourceConfig
+from rag_config import SourceConfig
 
 
 class BaseReader(ABC):

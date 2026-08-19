@@ -5,7 +5,6 @@ def test_parser_defaults():
     args = build_parser().parse_args([])
     assert args.source_ids is None  # None → all sources
     assert args.run_id is None
-    assert args.config  # env default or config/sources.yaml
 
 
 def test_parser_repeatable_source():
@@ -13,7 +12,7 @@ def test_parser_repeatable_source():
     assert args.source_ids == ["a", "b"]
 
 
-def test_main_unknown_source_exits_2(capsys, tmp_path):
+def test_main_unknown_source_exits_2(capsys, tmp_path, monkeypatch):
     config = tmp_path / "sources.yaml"
     config.write_text(
         "sources:\n"
@@ -22,6 +21,7 @@ def test_main_unknown_source_exits_2(capsys, tmp_path):
         "    source_system: web_rss\n"
         "    url: https://example.com/feed\n"
     )
-    rc = main(["--config", str(config), "--source", "nope"])
+    monkeypatch.setenv("RAG_SOURCES_PATH", str(config))
+    rc = main(["--source", "nope"])
     assert rc == 2
     assert "unknown source" in capsys.readouterr().err
