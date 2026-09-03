@@ -18,8 +18,10 @@ All from this directory:
 
 # Run discovery against the live ECB feeds (flags: --source ID, repeatable; --run-id)
 docker compose run --rm --build pipeline python -m rag_discover
-# compose live-mounts src/rag_discover and config/ into the container, so code
-# edits don't need --build — only dependency (uv.lock) changes do
+# compose live-mounts src/rag_discover into the container (sources.yaml and
+# parameters.yaml come from the rag-config dependency), so code edits don't need
+# --build — but a dependency change does, and skipping it fails at import time,
+# not at build time
 
 # Tests (offline; fixtures under tests/fixtures/)
 .venv/bin/python -m pytest
