@@ -52,12 +52,12 @@ Dependency versions are pinned in `uv.lock` — both the venv and the Docker ima
 `sources.yaml` and `parameters.yaml` come from `rag-config`, a **private** Bitbucket repo pinned by commit in `uv.lock`. The build clones it, so it needs read access:
 
 ```bash
-# compose (the usual path): the token comes from BITBUCKET_API_TOKEN in .env
+# compose (the usual path): the token comes from RAG_BITBUCKET_API_TOKEN in .env
 docker compose build
 
 # or plain docker, reading it from the shell
-export BITBUCKET_API_TOKEN='<repository access token>'
-docker build --secret id=git_token,env=BITBUCKET_API_TOKEN -t rag-discover .
+export RAG_BITBUCKET_API_TOKEN='<repository access token>'
+docker build --secret id=git_token,env=RAG_BITBUCKET_API_TOKEN -t rag-discover .
 ```
 
 Create the token at the `config` repo → Settings → Security → Access tokens → **Create Repository Access Token**, scope **Repositories: Read**. One token covers every stage's build — they all pull the same repo.
