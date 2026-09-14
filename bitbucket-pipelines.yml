@@ -41,7 +41,8 @@ pipelines:
     #         # Login to Azure ACR before building
     #         - echo $DOCKER_REGISTRY_SERVER_PASSWORD | docker login getregistry.azurecr.io --username $DOCKER_REGISTRY_SERVER_USER --password-stdin
     #         # Build the Docker image
-    #         - docker compose build
+    #         - export DOCKER_BUILDKIT=1
+    #         - docker build --secret id=git_token,env=RAG_CONFIG_TOKEN -t rag_discover -t rag_discover:$BITBUCKET_COMMIT -f ./Dockerfile .
     #         # Use the pipe to push the image to Azure ACR
     #         - pipe: atlassian/azure-acr-push-image:0.3.0
     #           variables:
@@ -59,8 +60,10 @@ pipelines:
           script:
             # Login to Azure ACR before building
             - echo $DOCKER_REGISTRY_SERVER_PASSWORD | docker login getregistry.azurecr.io --username $DOCKER_REGISTRY_SERVER_USER --password-stdin
-            # Build the Docker image
-            - docker compose build
+            # Build the Docker image; rag-config is a private git dependency, so the
+            # token goes in as a BuildKit secret (see Dockerfile), never a build arg
+            - export DOCKER_BUILDKIT=1
+            - docker build --secret id=git_token,env=RAG_CONFIG_TOKEN -t rag_discover -t rag_discover:$BITBUCKET_COMMIT -f ./Dockerfile .
             # Use the pipe to push the image to Azure ACR
             - pipe: atlassian/azure-acr-push-image:0.3.0
               variables:
