@@ -7,7 +7,7 @@ from pathlib import Path
 
 from sqlalchemy.engine import Engine
 
-from rag_discover.db import get_engine, upsert_manifest
+from rag_discover.db import count_manifest_rows, get_engine, upsert_manifest
 from rag_discover.readers import get_reader
 from rag_config import load_sources
 
@@ -45,6 +45,8 @@ def run_discovery(
         if missing:
             raise ValueError(f"unknown source(s) {missing}; known: {sorted(sources)}")
         selected = [sources[sid] for sid in source_ids]
+    if not selected:
+        raise ValueError("no sources to discover — sources.yaml lists none")
 
     report = DiscoveryReport(
         run_id=run_id
@@ -55,4 +57,8 @@ def run_discovery(
         entries = list(get_reader(cfg).discover(report.run_id))
         report.counts[cfg.id] = upsert_manifest(engine, entries)
         logger.info("%s: %s manifest rows", cfg.id, report.counts[cfg.id])
+    # No output is an error: delta's input is this run's manifest. Checked on the
+    # stored rows, not the listing counts, so writes that did not land fail too.
+    if count_manifest_rows(engine, report.run_id) == 0:
+        raise ValueError(f"run {report.run_id}: ingest_manifest has no rows for this run")
     return report

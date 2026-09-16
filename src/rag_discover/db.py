@@ -4,6 +4,8 @@ from typing import Iterable
 
 from sqlalchemy import (
     BigInteger,
+    func,
+    select,
     Column,
     DateTime,
     MetaData,
@@ -78,3 +80,11 @@ def upsert_manifest(engine: Engine, entries: Iterable[ManifestEntry]) -> int:
     with engine.begin() as conn:
         conn.execute(stmt, rows)
     return len(rows)
+
+
+def count_manifest_rows(engine: Engine, run_id: str) -> int:
+    """Rows actually stored in ingest_manifest for this run."""
+    with engine.connect() as conn:
+        return conn.execute(
+            select(func.count()).select_from(ingest_manifest).where(ingest_manifest.c.run_id == run_id)
+        ).scalar_one()
