@@ -11,7 +11,11 @@ services:
       # live-mount code over the image copy (edit without rebuild); sources.yaml
       # and parameters.yaml come from the rag-config dependency, not from here
       - ./src:/app
-      # not /app/data: sources.yaml scans local_files paths relative to the CWD
+      # local_files sources carry an absolute path in sources.yaml, so the
+      # host directory is mounted at that same path — same trick as
+      # /mnt/zdrive below, and it keeps host venv and container runs on one
+      # manifest key. /data is the older path some manifest rows still carry.
+      - ../data:/home/sipik/Claude/rag-pipeline/data
       - ../data:/data
       - ./.vscode:/app/.vscode
       - /mnt/zdrive:/mnt/zdrive
