@@ -15,10 +15,10 @@ services:
       # host directory is mounted at that same path — same trick as
       # /mnt/zdrive below, and it keeps host venv and container runs on one
       # manifest key. /data is the older path some manifest rows still carry.
-      - ../data:/home/sipik/Claude/rag-pipeline/data
+      - ../data:/home/sipik/Programare/Claude/rag-pipeline/data
       - ../data:/data
       - ./.vscode:/app/.vscode
-      - /mnt/zdrive:/mnt/zdrive
+      # - /mnt/zdrive:/mnt/zdrive
     # every var in .env (confluence credentials, RAG_HTTP_*) goes into the container
     env_file:
       - path: .env
